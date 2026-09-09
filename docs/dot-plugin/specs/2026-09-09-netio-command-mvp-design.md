@@ -6,7 +6,7 @@ Disetujui untuk penyusunan implementation plan.
 
 ## Tujuan
 
-Membangun MVP aplikasi Netio Command untuk monitoring dan operasi NOC dengan dukungan ZTE OLT C300/C320 serta MikroTik RouterOS v6/v7.
+Membangun MVP aplikasi Netio Command untuk monitoring dan operasi NOC dengan dukungan ZTE OLT C300/C320 serta MikroTik RouterOS v3-5.
 
 MVP mencakup:
 
