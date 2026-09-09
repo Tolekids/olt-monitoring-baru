@@ -17,7 +17,7 @@ MVP mencakup:
 - Command audit log.
 - Role-Based Access Control untuk Admin, NOC, dan Teknisi Field.
 
-Fitur GIS, CRM lengkap, IP pool, isolasi pelanggan, dan modul ONU unregistered penuh berada di fase berikutnya, kecuali data yang diperlukan untuk monitoring dasar.
+Fitur GIS, CRM lengkap, IP pool, dan modul ONU unregistered penuh berada di fase berikutnya, kecuali data yang diperlukan untuk monitoring dasar.
 
 ## Keputusan desain
 
