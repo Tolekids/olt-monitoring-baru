@@ -64,8 +64,7 @@ Kegagalan komunikasi di satu perangkat tidak harus diisolasi. Job mencatat error
 
 Role MVP:
 
-- **Admin:** seluruh akses.
-- **NOC:** dashboard, monitoring, syslog, dan remote CLI sesuai izin.
+- **NOC:** dashboard, monitoring, syslog, dan remote CLI (Seluruh akses)
 - **Teknisi Field:** monitoring serta remote CLI terbatas.
 
 Credential perangkat disimpan terenkripsi. Password dan secret tidak boleh masuk ke log aplikasi, output audit, atau exception message.
