@@ -76,7 +76,7 @@ Menyediakan pengelolaan perangkat, credential, protokol, test koneksi, status on
 Jenis perangkat awal:
 
 - ZTE OLT C300/C320.
-- MikroTik RouterOS v6/v7.
+- MikroTik RouterOS v3-5
 
 ### Polling
 
