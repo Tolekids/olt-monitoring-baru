@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: olt_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: olt_monitoring
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: olt_user
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
