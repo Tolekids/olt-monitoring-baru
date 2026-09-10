@@ -1,0 +1,40 @@
+post:
+  security: []
+  tags: [Auth]
+  operationId: authLogin
+  summary: Authenticate a user
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [email, password]
+          properties:
+            email:
+              type: string
+              format: email
+            password:
+              type: string
+              format: password
+  responses:
+    '200':
+      description: Login successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [data]
+            properties:
+              data:
+                type: object
+                required: [token, user]
+                properties:
+                  token: {type: string}
+                  user: {type: object}
+    '422':
+      description: Invalid credentials or request.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Error.yaml

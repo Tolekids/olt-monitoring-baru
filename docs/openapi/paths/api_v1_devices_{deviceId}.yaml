@@ -1,0 +1,45 @@
+parameters:
+  - in: path
+    name: deviceId
+    required: true
+    schema: {type: integer}
+get:
+  security: [{sanctum: []}]
+  tags: [Devices]
+  operationId: devicesGetById
+  summary: Get a device
+  responses:
+    '200':
+      description: Device details.
+    '404':
+      description: Device not found.
+patch:
+  security: [{sanctum: []}]
+  tags: [Devices]
+  operationId: devicesUpdateById
+  summary: Update a device
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/DeviceRequest.yaml
+  responses:
+    '200':
+      description: Device updated.
+    '403':
+      description: Forbidden.
+    '404':
+      description: Device not found.
+delete:
+  security: [{sanctum: []}]
+  tags: [Devices]
+  operationId: devicesDeleteById
+  summary: Soft-delete a device
+  responses:
+    '204':
+      description: Device deleted.
+    '403':
+      description: Forbidden.
+    '404':
+      description: Device not found.

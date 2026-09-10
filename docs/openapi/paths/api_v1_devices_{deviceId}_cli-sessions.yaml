@@ -1,0 +1,24 @@
+post:
+  security: [{sanctum: []}]
+  tags: [CLI]
+  operationId: cliSessionCreate
+  summary: Open a ZTE CLI session
+  parameters:
+    - in: path
+      name: deviceId
+      required: true
+      schema: {type: integer}
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [protocol]
+          properties:
+            protocol:
+              type: string
+              enum: [ssh, telnet]
+  responses:
+    '201': {description: CLI session created.}
+    '403': {description: Forbidden.}

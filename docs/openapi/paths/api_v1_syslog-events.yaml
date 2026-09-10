@@ -1,0 +1,23 @@
+get:
+  security: [{sanctum: []}]
+  tags: [Syslog]
+  operationId: syslogEventsList
+  summary: List syslog events
+  parameters:
+    - in: query
+      name: device_id
+      schema: {type: integer}
+    - in: query
+      name: severity
+      schema: {type: string}
+    - in: query
+      name: search
+      schema: {type: string}
+    - in: query
+      name: page
+      schema: {type: integer, minimum: 1, default: 1}
+  responses:
+    '200':
+      description: Paginated syslog events.
+    '401':
+      description: Unauthenticated.

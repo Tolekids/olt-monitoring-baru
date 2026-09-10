@@ -1,0 +1,22 @@
+post:
+  security: [{sanctum: []}]
+  tags: [CLI]
+  operationId: cliSessionExecuteCommand
+  summary: Execute an approved read-only command
+  parameters:
+    - in: path
+      name: sessionId
+      required: true
+      schema: {type: integer}
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [command]
+          properties:
+            command: {type: string, maxLength: 1000}
+  responses:
+    '200': {description: Command audit result.}
+    '422': {description: Command rejected.}

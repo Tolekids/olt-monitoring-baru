@@ -1,0 +1,10 @@
+post:
+  security: [{sanctum: []}]
+  tags: [Auth]
+  operationId: authLogout
+  summary: End the current session
+  responses:
+    '204':
+      description: Logout successful.
+    '401':
+      description: Unauthenticated.

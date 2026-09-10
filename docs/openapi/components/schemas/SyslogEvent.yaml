@@ -1,0 +1,22 @@
+type: object
+required: [id, source_ip, severity, message, received_at]
+properties:
+  id:
+    type: integer
+    format: int64
+  device_id:
+    type: integer
+    format: int64
+    nullable: true
+  source_ip:
+    type: string
+  facility:
+    type: string
+    nullable: true
+  severity:
+    type: string
+  message:
+    type: string
+  received_at:
+    type: string
+    format: date-time
