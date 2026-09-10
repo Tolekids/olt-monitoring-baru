@@ -1,0 +1,25 @@
+get:
+  security: [{sanctum: []}]
+  tags: [Dashboard]
+  operationId: dashboardSummary
+  summary: Get dashboard summary
+  responses:
+    '200':
+      description: Dashboard summary.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  devices_online: {type: integer}
+                  devices_offline: {type: integer}
+                  onus_online: {type: integer}
+                  onus_los: {type: integer}
+                  onus_power_off: {type: integer}
+                  aggregate_rx_bps: {type: number}
+                  aggregate_tx_bps: {type: number}
+    '401':
+      description: Unauthenticated.

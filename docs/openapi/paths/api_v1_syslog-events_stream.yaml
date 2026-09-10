@@ -1,0 +1,14 @@
+get:
+  security: [{sanctum: []}]
+  tags: [Syslog]
+  operationId: syslogEventsStream
+  summary: Stream new syslog events
+  responses:
+    '200':
+      description: Server-sent event stream.
+      content:
+        text/event-stream:
+          schema:
+            type: string
+    '401':
+      description: Unauthenticated.

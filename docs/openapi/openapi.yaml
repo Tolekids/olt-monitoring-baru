@@ -1,0 +1,65 @@
+openapi: 3.0.3
+info:
+  title: Netio Command API
+  version: 1.0.0
+  description: API for Netio Command NOC monitoring MVP.
+  license:
+    name: Proprietary
+    url: https://github.com/fathanr/olt-monitoring-baru
+servers:
+  - url: /api/v1
+tags:
+  - name: Auth
+    description: Authentication and current-user endpoints.
+  - name: Dashboard
+    description: Monitoring summary and traffic endpoints.
+  - name: Devices
+    description: Network device management endpoints.
+  - name: Syslog
+    description: Syslog history and event stream endpoints.
+  - name: CLI
+    description: Controlled ZTE CLI session endpoints.
+paths:
+  /auth/login:
+    $ref: ./paths/api_v1_auth_login.yaml
+  /auth/logout:
+    $ref: ./paths/api_v1_auth_logout.yaml
+  /me:
+    $ref: ./paths/api_v1_me.yaml
+  /dashboard/summary:
+    $ref: ./paths/api_v1_dashboard_summary.yaml
+  /dashboard/traffic:
+    $ref: ./paths/api_v1_dashboard_traffic.yaml
+  /devices:
+    $ref: ./paths/api_v1_devices.yaml
+  /devices/{deviceId}:
+    $ref: ./paths/api_v1_devices_{deviceId}.yaml
+  /devices/{deviceId}/test-connection:
+    $ref: ./paths/api_v1_devices_{deviceId}_test-connection.yaml
+  /syslog-events:
+    $ref: ./paths/api_v1_syslog-events.yaml
+  /syslog-events/stream:
+    $ref: ./paths/api_v1_syslog-events_stream.yaml
+  /devices/{deviceId}/cli-sessions:
+    $ref: ./paths/api_v1_devices_{deviceId}_cli-sessions.yaml
+  /cli-sessions/{sessionId}/commands:
+    $ref: ./paths/api_v1_cli-sessions_{sessionId}_commands.yaml
+  /cli-sessions/{sessionId}/close:
+    $ref: ./paths/api_v1_cli-sessions_{sessionId}_close.yaml
+components:
+  securitySchemes:
+    sanctum:
+      type: apiKey
+      in: cookie
+      name: laravel_session
+  schemas:
+    Device:
+      $ref: ./components/schemas/Device.yaml
+    DeviceRequest:
+      $ref: ./components/schemas/DeviceRequest.yaml
+    SyslogEvent:
+      $ref: ./components/schemas/SyslogEvent.yaml
+    Error:
+      $ref: ./components/schemas/Error.yaml
+    PaginationMeta:
+      $ref: ./components/schemas/PaginationMeta.yaml

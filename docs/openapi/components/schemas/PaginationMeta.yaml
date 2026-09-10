@@ -1,0 +1,15 @@
+type: object
+required: [current_page, per_page, total, last_page]
+properties:
+  current_page:
+    type: integer
+    minimum: 1
+  per_page:
+    type: integer
+    minimum: 1
+  total:
+    type: integer
+    minimum: 0
+  last_page:
+    type: integer
+    minimum: 0

@@ -6,7 +6,7 @@ Disetujui untuk penyusunan implementation plan.
 
 ## Tujuan
 
-Membangun MVP aplikasi Netio Command untuk monitoring dan operasi NOC dengan dukungan ZTE OLT C300/C320 serta MikroTik RouterOS v3-5.
+Membangun MVP aplikasi Netio Command untuk monitoring dan operasi NOC dengan dukungan ZTE OLT C300/C320 serta MikroTik RouterOS v6/v7.
 
 MVP mencakup:
 
@@ -56,7 +56,7 @@ Repository saat ini masih menggunakan Laravel 9 dan perlu di-upgrade sebelum imp
 5. Event perubahan status dipublikasikan ke channel real-time.
 6. Dashboard menerima pembaruan melalui SSE.
 
-Kegagalan komunikasi di satu perangkat tidak harus diisolasi. Job mencatat error, menandai perangkat offline, dan tidak boleh menghentikan worker atau membuat request dashboard gagal.
+Kegagalan komunikasi di satu perangkat harus diisolasi. Job mencatat error, menandai perangkat offline, dan tidak boleh menghentikan worker atau membuat request dashboard gagal.
 
 ## Struktur modul
 
@@ -64,7 +64,8 @@ Kegagalan komunikasi di satu perangkat tidak harus diisolasi. Job mencatat error
 
 Role MVP:
 
-- **NOC:** dashboard, monitoring, syslog, dan remote CLI (Seluruh akses)
+- **Admin:** seluruh akses.
+- **NOC:** dashboard, monitoring, syslog, dan remote CLI sesuai izin.
 - **Teknisi Field:** monitoring serta remote CLI terbatas.
 
 Credential perangkat disimpan terenkripsi. Password dan secret tidak boleh masuk ke log aplikasi, output audit, atau exception message.
@@ -76,7 +77,7 @@ Menyediakan pengelolaan perangkat, credential, protokol, test koneksi, status on
 Jenis perangkat awal:
 
 - ZTE OLT C300/C320.
-- MikroTik RouterOS v3-5
+- MikroTik RouterOS v6/v7
 
 ### Polling
 

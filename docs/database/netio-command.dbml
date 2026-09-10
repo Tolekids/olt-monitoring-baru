@@ -1,0 +1,218 @@
+Project {
+  database_type: 'MySQL'
+  Note: 'Netio Command MVP operational NOC schema'
+}
+
+// ─── IAM ─────────────────────────────────────────────────────────────────────
+Table users {
+  id bigint [pk, increment]
+  name varchar(255) [not null]
+  email varchar(255) [not null, unique]
+  password varchar(255) [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+}
+
+Table roles {
+  id bigint [pk, increment]
+  name varchar(255) [not null, unique] // Admin, NOC, Teknisi Field
+  guard_name varchar(255) [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table permissions {
+  id bigint [pk, increment]
+  name varchar(255) [not null, unique]
+  guard_name varchar(255) [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table model_has_roles {
+  role_id bigint [not null, ref: > roles.id]
+  model_type varchar(255) [not null]
+  model_id bigint [not null, ref: > users.id]
+
+  Indexes {
+    (role_id, model_id, model_type) [pk]
+    model_id
+  }
+}
+
+Table role_has_permissions {
+  permission_id bigint [not null, ref: > permissions.id]
+  role_id bigint [not null, ref: > roles.id]
+
+  Indexes {
+    (permission_id, role_id) [pk]
+    role_id
+  }
+}
+
+// ─── Devices ────────────────────────────────────────────────────────────────
+Table devices {
+  id bigint [pk, increment]
+  name varchar(255) [not null]
+  vendor varchar(100) [not null] // zte, mikrotik
+  model varchar(100) [not null]
+  device_type varchar(100) [not null] // olt, router
+  management_ip varchar(45) [not null, unique]
+  status varchar(30) [not null] // unknown, online, offline
+  is_polling_enabled boolean [not null, default: true]
+  last_seen_at timestamp
+  last_error text
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+}
+
+Table device_credentials {
+  id bigint [pk, increment]
+  device_id bigint [not null, ref: > devices.id]
+  protocol varchar(30) [not null] // snmp_v2c, snmp_v3, ssh, telnet, routeros_api
+  port int [not null]
+  username varchar(255)
+  encrypted_password text
+  encrypted_community text
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Indexes {
+    device_id
+    (device_id, protocol) [unique]
+  }
+}
+
+Table olt_pon_ports {
+  id bigint [pk, increment]
+  device_id bigint [not null, ref: > devices.id]
+  slot int [not null]
+  port int [not null]
+  name varchar(255)
+  status varchar(30) [not null] // unknown, up, down
+  rx_power_threshold decimal(8,3)
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Indexes {
+    device_id
+    (device_id, slot, port) [unique]
+  }
+}
+
+Table onus {
+  id bigint [pk, increment]
+  olt_pon_port_id bigint [not null, ref: > olt_pon_ports.id]
+  onu_identifier varchar(100) [not null]
+  serial_number varchar(100)
+  name varchar(255)
+  status varchar(30) [not null] // unknown, online, los, power_off
+  rx_power decimal(8,3)
+  last_seen_at timestamp
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Indexes {
+    olt_pon_port_id
+    (olt_pon_port_id, onu_identifier) [unique]
+    status
+  }
+}
+
+// ─── Monitoring ─────────────────────────────────────────────────────────────
+Table device_metric_samples {
+  id bigint [pk, increment]
+  device_id bigint [not null, ref: > devices.id]
+  metric_name varchar(100) [not null]
+  metric_value decimal(20,6) [not null]
+  recorded_at timestamp [not null]
+
+  Indexes {
+    device_id
+    (device_id, metric_name, recorded_at)
+  }
+}
+
+Table traffic_samples {
+  id bigint [pk, increment]
+  device_id bigint [not null, ref: > devices.id]
+  interface_name varchar(255) [not null]
+  rx_bps decimal(20,3) [not null]
+  tx_bps decimal(20,3) [not null]
+  recorded_at timestamp [not null]
+
+  Indexes {
+    device_id
+    (device_id, interface_name, recorded_at)
+  }
+}
+
+Table device_poll_runs {
+  id bigint [pk, increment]
+  device_id bigint [not null, ref: > devices.id]
+  poll_type varchar(50) [not null] // olt, router, traffic, onu_discovery
+  status varchar(30) [not null] // running, completed, failed, timed_out
+  started_at timestamp [not null]
+  finished_at timestamp
+  error_message text
+
+  Indexes {
+    device_id
+    (device_id, poll_type, started_at)
+  }
+}
+
+// ─── Syslog and CLI ──────────────────────────────────────────────────────────
+Table syslog_events {
+  id bigint [pk, increment]
+  device_id bigint [ref: > devices.id]
+  source_ip varchar(45) [not null]
+  facility varchar(50)
+  severity varchar(30) [not null]
+  message text [not null]
+  received_at timestamp [not null]
+  parsed_at timestamp
+
+  Indexes {
+    device_id
+    (severity, received_at)
+    (source_ip, received_at)
+  }
+}
+
+Table cli_sessions {
+  id bigint [pk, increment]
+  user_id bigint [not null, ref: > users.id]
+  device_id bigint [not null, ref: > devices.id]
+  protocol varchar(30) [not null] // ssh, telnet
+  status varchar(30) [not null] // opening, active, closed, failed
+  started_at timestamp [not null]
+  ended_at timestamp
+
+  Indexes {
+    user_id
+    device_id
+    (device_id, status)
+  }
+}
+
+Table command_audit_logs {
+  id bigint [pk, increment]
+  cli_session_id bigint [not null, ref: > cli_sessions.id]
+  user_id bigint [not null, ref: > users.id]
+  device_id bigint [not null, ref: > devices.id]
+  command text [not null]
+  output_excerpt text
+  success boolean [not null]
+  executed_at timestamp [not null]
+
+  Indexes {
+    cli_session_id
+    user_id
+    device_id
+    (device_id, executed_at)
+  }
+}

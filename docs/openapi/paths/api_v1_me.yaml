@@ -1,0 +1,10 @@
+get:
+  security: [{sanctum: []}]
+  tags: [Auth]
+  operationId: authMe
+  summary: Get the authenticated user
+  responses:
+    '200':
+      description: Authenticated user.
+    '401':
+      description: Unauthenticated.

@@ -14,11 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call(RolesAndPermissionsSeeder::class);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $admin = \App\Models\User::factory()->create([
+            'name' => 'NOC Administrator',
+            'email' => 'admin@netio.local',
+            'password' => 'password',
+        ]);
+
+        $admin->assignRole('Admin');
     }
 }

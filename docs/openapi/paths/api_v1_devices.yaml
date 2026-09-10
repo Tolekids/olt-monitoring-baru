@@ -1,0 +1,36 @@
+get:
+  security: [{sanctum: []}]
+  tags: [Devices]
+  operationId: devicesList
+  summary: List devices
+  parameters:
+    - in: query
+      name: page
+      schema: {type: integer, minimum: 1, default: 1}
+    - in: query
+      name: per_page
+      schema: {type: integer, minimum: 1, maximum: 100, default: 20}
+    - in: query
+      name: search
+      schema: {type: string}
+  responses:
+    '200':
+      description: Paginated devices.
+    '401':
+      description: Unauthenticated.
+post:
+  security: [{sanctum: []}]
+  tags: [Devices]
+  operationId: devicesCreate
+  summary: Create a device
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/DeviceRequest.yaml
+  responses:
+    '201':
+      description: Device created.
+    '422':
+      description: Validation error.

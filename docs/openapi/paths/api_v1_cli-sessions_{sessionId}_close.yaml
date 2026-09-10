@@ -1,0 +1,13 @@
+post:
+  security: [{sanctum: []}]
+  tags: [CLI]
+  operationId: cliSessionClose
+  summary: Close a CLI session
+  parameters:
+    - in: path
+      name: sessionId
+      required: true
+      schema: {type: integer}
+  responses:
+    '200': {description: CLI session closed.}
+    '403': {description: Forbidden.}
